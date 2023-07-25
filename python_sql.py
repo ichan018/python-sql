@@ -31,6 +31,31 @@ def create_task(conn,task):
 
     return cur.lastrowid
 
+def get_info():
+    car_id = int(input("Enter car number id"))
+    car_make = input("Enter car make")
+    car_model = input("Enter car model")
+
+    return (car_id,car_make,car_model)
+
+def read_list(conn):
+    sql = '''SELECT * FROM cars'''
+    cur = conn.cursor()
+    x = cur.execute(sql)
+    
+    for row in x.fetchall():
+        print(row)
+    
+def delete_info(conn,modelInfo):
+    #print("Working on it")
+    confirmDelete = input("Type 'y' to confirm that you would like to delete")
+    if confirmDelete == "y":
+        sql = '''DELETE FROM cars WHERE model = VALUES(?)'''
+        cur = conn.cursor()
+        x = cur.execute(sql)
+    else:
+        print(val,"not deleted")
+
 def main():
     database = r"C:\Users\ivans\source\repos\python sql\data.db"
 
@@ -50,6 +75,8 @@ def main():
             print("What would you like to do?")
             print("0: End task")
             print("1: Enter a task")
+            print("2: Delete information")
+            print("3: Print table")
             
             try:
                 ans = int(input())
@@ -57,8 +84,15 @@ def main():
                 print("Please only enter input.")
                 continue
 
-            if ans == 1:
-                create_task(conn,(54678,'Honda','Passport'))
+            if ans == 3:
+                read_list(conn)
+            if ans ==2:
+                val = input("Enter model of vehicle you would like to delete")
+
+                delete_info(conn,(val))
+            elif ans == 1:
+                car_params = get_info() #work on it
+                create_task(conn,car_params)
             elif ans == 0:
                 print("Thanks for running this program")
                 ifContinue = 0
