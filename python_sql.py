@@ -32,9 +32,9 @@ def create_task(conn,task):
     return cur.lastrowid
 
 def get_info():
-    car_id = int(input("Enter car number id"))
-    car_make = input("Enter car make")
-    car_model = input("Enter car model")
+    car_id = int(input("Enter car number id: "))
+    car_make = input("Enter car make: ")
+    car_model = input("Enter car model: ")
 
     return (car_id,car_make,car_model)
 
@@ -48,11 +48,10 @@ def read_list(conn):
     
 def delete_info(conn,modelInfo):
     #print("Working on it")
-    confirmDelete = input("Type 'y' to confirm that you would like to delete")
+    confirmDelete = input("Type 'y' to confirm that you would like to delete: ")
     if confirmDelete == "y":
-        sql = '''DELETE FROM cars WHERE model = VALUES(?)'''
         cur = conn.cursor()
-        x = cur.execute(sql)
+        x = cur.execute("DELETE FROM cars WHERE id = ?",modelInfo)
     else:
         print(val,"not deleted")
 
@@ -73,9 +72,9 @@ def main():
 
         while ifContinue:
             print("What would you like to do?")
-            print("0: End task")
+            print("0: End program")
             print("1: Enter a task")
-            print("2: Delete information")
+            print("2: Delete id")
             print("3: Print table")
             
             try:
@@ -87,14 +86,14 @@ def main():
             if ans == 3:
                 read_list(conn)
             if ans ==2:
-                val = input("Enter model of vehicle you would like to delete")
+                val = input("Enter id of vehicle you would like to delete: ")
 
-                delete_info(conn,(val))
+                delete_info(conn,(val,))
             elif ans == 1:
                 car_params = get_info() #work on it
                 create_task(conn,car_params)
             elif ans == 0:
-                print("Thanks for running this program")
+                print("Thanks for running this program!")
                 ifContinue = 0
     else:
         print("Error")
